@@ -1,0 +1,38 @@
+application: pubsubhubbub
+version: 1
+runtime: python
+api_version: 1
+
+skip_files:
+- ^(.*/)?app\.yaml
+- ^(.*/)?app\.yml
+- ^(.*/)?index\.yaml
+- ^(.*/)?index\.yml
+- ^(.*/)?#.*#
+- ^(.*/)?.*~
+- ^(.*/)?.*\.py[co].*
+- ^(.*/)?.*/RCS/.*
+- ^(.*/)?\..*
+- ^(.*/)?(main_test|remote_shell|testutil|urlfetch_test_stub|feed_diff_test)\.py
+- ^(.*/)?feed_diff_testdata
+
+handlers:
+- url: /base\.css
+  static_files: base.css
+  upload: base\.css
+
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /remote_api
+  script: $PYTHON_LIB/google/appengine/ext/remote_api/handler.py
+  login: admin
+
+# Optional bookmarklet creation gadget.
+- url: /bookmarklet(_jsonp\.min\.js|\.min\.js|\.html|_config\.html|_gadget\.xml)
+  static_files: bookmarklet/bookmarklet\1
+  upload: bookmarklet/.+\.(min\.js|html|xml)
+
+- url: .*
+  script: main.py
